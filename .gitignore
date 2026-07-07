@@ -1,2 +1,7 @@
-dataset
-dataset_raw
+dataset/*
+dataset_raw/*
+datasets/*
+
+!dataset/*.py
+!datasets/*.py
+!dataset_raw/*.py
