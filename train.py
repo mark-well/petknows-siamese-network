@@ -1,34 +1,47 @@
 from torch.utils.data import DataLoader
 import torch
-
+import os
 from datasets.triplet_dataset import TripletDataset
 from datasets.transforms import train_transform
 from siamese_network import SiamseNetwork
 
+# Constants
+MODEL_SAVE_DIRECTORY = "models/"
+MODEL_FILENAME = "siamese_resnet18.pth"
+DATASET_DIRECTORY = "dataset"
+
+# Loader
+loader_batch_size = 16
+loader_workers = 0
+
+# Training
+number_of_epochs = 20
+
 def main():
-    model = SiamseNetwork()
+
+    # Use GPU if available for training, otherwise use CPU
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = SiamseNetwork()
     model.to(device)
 
+    #Generates a tiplet dataset
     dataset = TripletDataset(
-        root="dataset",
+        root=DATASET_DIRECTORY,
         transform=train_transform
     )
 
     loader = DataLoader(
         dataset,
-        batch_size=16,
+        batch_size=loader_batch_size,
         shuffle=True,
-        num_workers=0
+        num_workers=loader_workers
     )
 
     criterion = torch.nn.TripletMarginLoss(margin=1.0, p=2)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 
     # Training Loop
-    number_of_epochs = 20
     best_loss = float("inf")
-
     for epoch in range(number_of_epochs):
         model.train()
         running_loss = 0
@@ -50,12 +63,7 @@ def main():
             optimizer.step()
 
             running_loss += loss.item()
-
-            print(
-                f"Epoch {epoch+1}"
-                f"Batcj {batch+1}/{len(loader)}"
-                f"Loss: {loss.item():.4f}"
-            )
+            print(f"Epoch {epoch+1} \nBatch {batch+1}/{len(loader)} \nLoss: {loss.item():.4f}")
 
         # Calculated average loss
         avg_loss = running_loss / len(loader)
@@ -64,7 +72,7 @@ def main():
         # Save the model after training
         if avg_loss < best_loss:
             best_loss = avg_loss
-            torch.save(model.state_dict(), "siamese_resnet18.pth")
+            torch.save(model.state_dict(), os.path.join(MODEL_SAVE_DIRECTORY, MODEL_FILENAME))
             print("Model saved!")
 
 
