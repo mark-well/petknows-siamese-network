@@ -10,8 +10,6 @@ class SiameseEncoder(nn.Module):
 
         #Resnet as the feature extractor
         self.backbone = nn.Sequential(*list(resnet.children())[:-1])
-
-        #Converts YOLOv11 features maps to embeddings
         self.embedding = nn.Linear(512, 128)
 
     def forward(self, x):
