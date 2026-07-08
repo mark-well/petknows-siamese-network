@@ -7,3 +7,7 @@ datasets/*
 !dataset_raw/*.py
 
 *.pth
+
+__pycache__/
+*.py[cod]
+*$py.class
