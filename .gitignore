@@ -1,13 +1,23 @@
-dataset/*
-dataset_raw/*
-datasets/*
-
-!dataset/*.py
-!datasets/*.py
-!dataset_raw/*.py
-
-*.pth
-
+# Created by .ignore support plugin (hsz.mobi)
+### Python template
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+data/**
+!data/**/
+!data/**/*.py
