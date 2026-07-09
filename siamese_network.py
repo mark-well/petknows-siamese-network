@@ -12,3 +12,6 @@ class SiamseNetwork(nn.Module):
         embedding2 = self.encoder(image2)
 
         return embedding1, embedding2
+    
+    def get_embedding(self, image):
+        return self.encoder(image)

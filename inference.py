@@ -5,7 +5,7 @@ from datasets.transforms import test_transform
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = SiamseNetwork().to(device)
-model.load_state_dict(torch.load("siamese_resnet18.pth", map_location=device))
+model.load_state_dict(torch.load("models/siamese_resnet18.pth", map_location=device))
 model.eval()
 
 def load_image(path):
@@ -19,8 +19,8 @@ img1 = load_image("C:\\Users\\markw\\Downloads\\dog_faces_dataset\\train\\001161
 img2 = load_image("C:\\Users\\markw\\Downloads\\dog_faces_dataset\\train\\001173\\0007.jpg")
 
 with torch.no_grad():
-    emb1 = model.encoder(img1.to(device))
-    emb2 = model.encoder(img2.to(device))
+    emb1 = model.get_embedding(img1.to(device))
+    emb2 = model.get_embedding(img2.to(device))
 
     similarity = torch.nn.functional.cosine_similarity(emb1, emb2)
     print(similarity.item())
