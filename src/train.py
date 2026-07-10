@@ -13,7 +13,7 @@ VALIDATION_DATASET_DIRECTORY = "/content/drive/MyDrive/petknows/dataset/val"
 
 # Loader
 loader_batch_size = 16
-loader_workers = 0
+loader_workers = 4
 
 # Training
 number_of_epochs = 20
@@ -40,8 +40,9 @@ def main():
         train_dataset,
         batch_size=loader_batch_size,
         shuffle=True,
-        num_workers=loader_workers
-    
+        num_workers=loader_workers,
+        pin_memory=True,
+        persistent_workers=True
     )
 
     validation_loader = DataLoader(
