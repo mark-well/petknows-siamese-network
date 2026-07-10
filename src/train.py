@@ -71,11 +71,14 @@ def main():
         running_loss = 0
 
         for batch, (anchor, positive, negative) in enumerate(train_loader):
-            images = torch.cat([anchor, positive, negative], dim=0)
+            anchor = anchor.to(device, non_blocking=True)
+            positive = positive.to(device, non_blocking=True)
+            negative = negative.to(device, non_blocking=True)
 
             optimizer.zero_grad()
-            embeddings = model.encoder(images)
-            anchor_embedding, positive_embedding, negative_embedding = embeddings.chunk(3)
+            anchor_embedding = model.encoder(anchor)
+            positive_embedding = model.encoder(positive)
+            negative_embedding = model.encoder(negative)
 
             loss = criterion(anchor_embedding, positive_embedding, negative_embedding)
             loss.backward()
