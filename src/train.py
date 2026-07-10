@@ -6,10 +6,10 @@ from transforms import train_transform, test_transform
 from siamese_network import SiamseNetwork
 
 # Constants
-MODEL_SAVE_DIRECTORY = "/content/drive/petknows-siamese-network/your_project/models"
-MODEL_FILENAME = "siamese_resnet18.pth"
-TRAIN_DATASET_DIRECTORY = "/content/petknows-siamese-network/data/train"
-VALIDATION_DATASET_DIRECTORY = "/content/petknows-siamese-network/data/val"
+MODEL_SAVE_DIRECTORY = "/content/drive/MyDrive/petknows/models"
+MODEL_FILENAME = "siamese_resnet18_v2.pth"
+TRAIN_DATASET_DIRECTORY = "/content/drive/MyDrive/petknows/dataset/train"
+VALIDATION_DATASET_DIRECTORY = "/content/drive/MyDrive/petknows/dataset/val"
 
 # Loader
 loader_batch_size = 16
