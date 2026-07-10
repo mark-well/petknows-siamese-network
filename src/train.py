@@ -12,7 +12,7 @@ TRAIN_DATASET_DIRECTORY = "/content/drive/MyDrive/petknows/dataset/train"
 VALIDATION_DATASET_DIRECTORY = "/content/drive/MyDrive/petknows/dataset/val"
 
 # Loader
-loader_batch_size = 16
+loader_batch_size = 64
 loader_workers = 4
 
 # Training
@@ -49,7 +49,9 @@ def main():
         validation_dataset,
         batch_size=loader_batch_size,
         shuffle=False,
-        num_workers=loader_workers
+        num_workers=loader_workers,
+        pin_memory=True,
+        persistent_workers=True
     )
 
     criterion = torch.nn.TripletMarginLoss(margin=1.0, p=2)
