@@ -22,9 +22,14 @@ number_of_epochs = 20
 def main():
     # Use GPU if available for training, otherwise use CPU
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Device: {device}\n")
     model = SiamseNetwork()
     model.to(device)
+
+    # Info to print before trainging
+    print(f"Is cuda available: {torch.cuda.is_available()}\n")
+    print(f"Device: {device}\n")
+    print(f"Device used by model: {next(model.parameters()).device}\n")
+
 
     #Generates a tiplet dataset
     train_dataset = TripletDataset(
