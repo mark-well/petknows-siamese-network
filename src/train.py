@@ -1,9 +1,9 @@
 from torch.utils.data import DataLoader
 import torch
 import os
-from src.triplet_dataset import TripletDataset
-from src.transforms import train_transform, test_transform
-from src.siamese_network import SiamseNetwork
+from triplet_dataset import TripletDataset
+from transforms import train_transform, test_transform
+from siamese_network import SiamseNetwork
 
 # Constants
 MODEL_SAVE_DIRECTORY = "/content/drive/petknows-siamese-network/your_project/models"
@@ -21,6 +21,7 @@ number_of_epochs = 20
 def main():
     # Use GPU if available for training, otherwise use CPU
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Device: {device}\n")
     model = SiamseNetwork()
     model.to(device)
 
