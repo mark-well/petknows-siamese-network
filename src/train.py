@@ -64,9 +64,9 @@ def main():
         running_loss = 0
 
         for batch, (anchor, positive, negative) in enumerate(train_loader):
-            anchor = anchor.to(device)
-            positive = positive.to(device)
-            negative = negative.to(device)
+            anchor = anchor.to(device, non_blocking=True)
+            positive = positive.to(device, non_blocking=True)
+            negative = negative.to(device, non_blocking=True)
 
             optimizer.zero_grad()
             anchor_embedding = model.encoder(anchor)
@@ -78,9 +78,10 @@ def main():
             optimizer.step()
 
             running_loss += loss.item()
-            avg_train_loss = running_loss / len(train_loader)
-            val_loss, val_acc = evaluate(model, validation_loader, criterion, device)
-            print(f"Epoch {epoch+1} Batch {batch+1}: train_loss={avg_train_loss:.4f} val_loss={val_loss:.4f} val_acc={val_acc:.4f}")
+
+        avg_train_loss = running_loss / len(train_loader)
+        val_loss, val_acc = evaluate(model, validation_loader, criterion, device)
+        print(f"Epoch {epoch+1} Batch {batch+1}: train_loss={avg_train_loss:.4f} val_loss={val_loss:.4f} val_acc={val_acc:.4f}")
 
         ## Save based on VALIDATION loss, not training loss
         if val_loss < best_val_loss:
