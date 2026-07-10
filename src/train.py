@@ -12,7 +12,7 @@ TRAIN_DATASET_DIRECTORY = "/content/drive/MyDrive/petknows/dataset/train"
 VALIDATION_DATASET_DIRECTORY = "/content/drive/MyDrive/petknows/dataset/val"
 
 # Loader
-loader_batch_size = 64
+loader_batch_size = 16
 loader_workers = 4
 
 # Training
