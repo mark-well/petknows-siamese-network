@@ -22,4 +22,5 @@ data/**
 !data/**/
 !data/**/*.py
 
-models
+models/*
+models/*.pth
