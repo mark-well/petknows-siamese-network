@@ -13,7 +13,7 @@ TRAIN_DATASET_DIRECTORY = "/content/dataset/train"
 VALIDATION_DATASET_DIRECTORY = "/content/dataset/val"
 
 # Loader
-loader_batch_size = 16
+loader_batch_size = 32
 loader_workers = 4
 
 # Training
@@ -26,8 +26,8 @@ def main():
     model.to(device)
 
     # Info to print before trainging
-    print(f"Is cuda available: {torch.cuda.is_available()}\n")
-    print(f"Device: {device}\n")
+    print(f"Is cuda available: {torch.cuda.is_available()}")
+    print(f"Device: {device}")
     print(f"Device used by model: {next(model.parameters()).device}\n")
 
 
@@ -71,14 +71,11 @@ def main():
         running_loss = 0
 
         for batch, (anchor, positive, negative) in enumerate(train_loader):
-            anchor = anchor.to(device, non_blocking=True)
-            positive = positive.to(device, non_blocking=True)
-            negative = negative.to(device, non_blocking=True)
+            images = torch.cat([anchor, positive, negative], dim=0)
 
             optimizer.zero_grad()
-            anchor_embedding = model.encoder(anchor)
-            positive_embedding = model.encoder(positive)
-            negative_embedding = model.encoder(negative)
+            embeddings = model.encoder(images)
+            anchor_embedding, positive_embedding, negative_embedding = embeddings.chunk(3)
 
             loss = criterion(anchor_embedding, positive_embedding, negative_embedding)
             loss.backward()
