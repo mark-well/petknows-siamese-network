@@ -77,7 +77,7 @@ def main():
             running_loss += loss.item()
             avg_train_loss = running_loss / len(train_loader)
             val_loss, val_acc = evaluate(model, validation_loader, criterion, device)
-            print(f"Epoch {epoch+1}: train_loss={avg_train_loss:.4f} val_loss={val_loss:.4f} val_acc={val_acc:.4f}")
+            print(f"Epoch {epoch+1} Batch {batch+1}: train_loss={avg_train_loss:.4f} val_loss={val_loss:.4f} val_acc={val_acc:.4f}")
 
         ## Save based on VALIDATION loss, not training loss
         if val_loss < best_val_loss:
