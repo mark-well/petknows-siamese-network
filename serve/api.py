@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import torch
 import numpy as np
 import ast
-from supabase_client import get_all_pets
+from serve.supabase_client import get_all_pets
 
 load_dotenv()
 allowed_origins = os.environ.get("ALLOWED_ORIGINS", "").split(",")
@@ -43,28 +43,29 @@ async def identify_pet(file: UploadFile):
     current_pet_embedding = await get_embedding_async(image)
 
     pets = get_all_pets().data
-    best_similarity = -1.0
-    best_pet = None
+    results = []
 
     for pet in pets:
         pet_embedding = torch.from_numpy(np.array(ast.literal_eval(pet["embedding"]), dtype=np.float32))
         similarity = torch.nn.functional.cosine_similarity(current_pet_embedding, pet_embedding.unsqueeze(0)).item()
 
-        if similarity > best_similarity:
-            best_similarity = similarity
-            best_pet = pet
+        results.append({
+            "pet": pet,
+            "similarity": similarity
+        })
 
-    if best_similarity < THRESHOLD:
+    results.sort(key=lambda x: x["similarity"], reverse=True)
+    results = [result for result in results if result["similarity"] >= THRESHOLD]
+    top_matches = results[:3]
+
+    if not top_matches:
         return {
             "found": False,
-            "message": "Pet not found.",
-            "similarity": best_similarity,
-            "pet": best_pet
+            "message": "Pet not found."
         }
 
     return {
             "found": True,
             "message": "Pet found.",
-            "similarity": best_similarity,
-            "pet": best_pet
+            "top_matches": top_matches
         }
